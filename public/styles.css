@@ -1,0 +1,133 @@
+/* Mise en forme générale de la page */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Conteneur principal */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin-top: 30px;
+  }
+  
+  h1 {
+    text-align: center;
+    color: #4CAF50;
+    margin-bottom: 30px;
+  }
+  
+  h2 {
+    color: #4CAF50;
+    margin-bottom: 10px;
+    font-size: 1.5rem;
+  }
+  
+  /* Style des listes (étudiants, livres, emprunts) */
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+  }
+  
+  li {
+    background-color: #f9f9f9;
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 1rem;
+    margin-top: 10px;
+    transition: background-color 0.3s;
+  }
+  
+  button:hover {
+    background-color: #45a049;
+  }
+  
+  /* Style des formulaires */
+  form {
+    margin-bottom: 30px;
+  }
+  
+  input, select {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+  }
+  
+  input[type="checkbox"] {
+    width: auto;
+    margin-right: 10px;
+    vertical-align: middle;
+  }
+  
+  input[type="date"] {
+    width: 48%;
+  }
+  
+  select {
+    width: 48%;
+    display: inline-block;
+  }
+  
+  input:focus, select:focus {
+    border-color: #4CAF50;
+    outline: none;
+  }
+  
+  h2 + form {
+    background-color: #f8f8f8;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+  }
+  
+  /* Style général des sections */
+  section {
+    margin-bottom: 40px;
+  }
+  
+  section h2 {
+    margin-top: 0;
+  }
+  
+  /* Responsivité */
+  @media screen and (max-width: 768px) {
+    .container {
+      padding: 15px;
+    }
+  
+    input, select {
+      width: 100%;
+    }
+  
+    input[type="date"] {
+      width: 100%;
+      margin-right: 0;
+    }
+  
+    select {
+      width: 100%;
+    }
+  }
+  
