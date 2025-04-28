@@ -2,7 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const session = require('express-session');
-require('dotenv').config();
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '.env') });
 
 // Import des routes
 const etudiantRoutes = require('./routes/etudiants');
@@ -31,11 +32,25 @@ app.use(express.static('public'));
 
 // Configuration de la session
 app.use(session({
-  secret: 'your-secret-key',
+  secret: process.env.SESSION_SECRET || 'your-secret-key-here',
   resave: false,
   saveUninitialized: false,
-  cookie: { secure: false } // Mettez à true si vous utilisez HTTPS
+  cookie: { secure: process.env.NODE_ENV === 'production' }
 }));
+
+// Middleware pour logger les erreurs
+app.use((err, req, res, next) => {
+  console.error('Erreur détaillée:', {
+    message: err.message,
+    stack: err.stack,
+    path: req.path,
+    method: req.method
+  });
+  res.status(500).render('error', { 
+    message: 'Une erreur est survenue',
+    error: process.env.NODE_ENV === 'development' ? err : {}
+  });
+});
 
 // Routes d'authentification
 app.get('/login', (req, res) => {
@@ -69,31 +84,73 @@ app.use('/api/empruntes', isAuthenticated, empruntRoutes);
 // Route principale (protégée par authentification)
 app.get('/', isAuthenticated, async (req, res) => {
   try {
+    console.log('Tentative de chargement des données...');
     const [etudiants, livres, emprunts] = await Promise.all([
-      Etudiant.find(),
-      Livre.find(),
-      Emprunte.find().populate('etudiant livre')
+      Etudiant.find().exec(),
+      Livre.find().exec(),
+      Emprunte.find().populate('etudiant livre').exec()
     ]);
+    
+    console.log('Données chargées avec succès:', {
+      etudiants: etudiants.length,
+      livres: livres.length,
+      emprunts: emprunts.length
+    });
     
     res.render('index', { etudiants, livres, emprunts });
   } catch (error) {
-    console.error('Erreur lors du chargement des données:', error);
-    res.status(500).send('Erreur serveur');
+    console.error('Erreur détaillée lors du chargement des données:', error);
+    res.status(500).render('error', { 
+      message: 'Une erreur est survenue lors du chargement des données',
+      error: process.env.NODE_ENV === 'development' ? error : {}
+    });
   }
 });
 
-// Connexion à la base de données
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-}).then(() => {
-  console.log('Connecté à la base de données');
-}).catch((err) => {
-  console.error('Erreur de connexion:', err);
+// Route de test de la connexion MongoDB
+app.get('/test-db', async (req, res) => {
+  try {
+    const db = mongoose.connection;
+    const collections = await db.db.listCollections().toArray();
+    res.json({
+      status: 'success',
+      message: 'Connexion MongoDB active',
+      collections: collections.map(c => c.name)
+    });
+  } catch (error) {
+    console.error('Erreur de test MongoDB:', error);
+    res.status(500).json({
+      status: 'error',
+      message: 'Erreur de connexion MongoDB',
+      error: error.message
+    });
+  }
 });
 
+// Connexion à MongoDB Atlas
+const MONGODB_URI = 'mongodb+srv://livrables-db:Jq4V%2DKTTw%3AyA68g@cluster0.pjemiiw.mongodb.net/gestion-bibliotheque?retryWrites=true&w=majority';
+
+if (!MONGODB_URI) {
+  console.error('Erreur: MONGODB_URI n\'est pas défini');
+  process.exit(1);
+}
+
+mongoose.connect(MONGODB_URI)
+  .then(() => {
+    console.log('Connecté à MongoDB Atlas avec succès');
+  })
+  .catch((err) => {
+    console.error('Erreur de connexion à MongoDB Atlas:', {
+      message: err.message,
+      code: err.code,
+      codeName: err.codeName
+    });
+    console.log('Veuillez vérifier vos identifiants MongoDB Atlas');
+    process.exit(1);
+  });
+
 // Lancer le serveur
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Serveur démarré sur http://localhost:${PORT}`);
 });
