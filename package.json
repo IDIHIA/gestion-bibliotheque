@@ -7,11 +7,7 @@
     "build": "echo \"No build step\"",
     "test": "echo \"Running tests...\" && exit 0"
   },
-  "keywords": [
-    "library",
-    "management",
-    "system"
-  ],
+  "keywords": ["library", "management", "system"],
   "author": "Your Name",
   "license": "ISC",
   "description": "A library management system built with Node.js and Express.",
@@ -23,9 +19,8 @@
     "body-parser": "^2.2.0",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
-    "ejs": "^3.1.10",
     "express": "^5.1.0",
-    "express-session": "^1.18.1",
+    "express-session": "^1.18.0",
     "mongoose": "^8.14.0"
   }
 }
