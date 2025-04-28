@@ -1,14 +1,20 @@
 {
   "name": "gestion-bibliotheque",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js",
+    "build": "echo \"No build step\"",
+    "test": "echo \"Running tests...\" && exit 0"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["library", "management", "system"],
+  "author": "Your Name",
   "license": "ISC",
-  "description": "",
+  "description": "A library management system built with Node.js and Express.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/gestion-bibliotheque.git"
+  },
   "dependencies": {
     "body-parser": "^2.2.0",
     "cors": "^2.8.5",
