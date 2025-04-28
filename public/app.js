@@ -59,69 +59,95 @@ async function getEmprunts() {
   });
 }
 
+// Fonction pour recharger la page après une action
+function reloadPage() {
+  window.location.reload();
+}
+
 // Ajouter un étudiant
 document.getElementById('addEtudiantForm').addEventListener('submit', async (e) => {
   e.preventDefault();
-  const nom = document.getElementById('etudiantNom').value;
-  const prenom = document.getElementById('etudiantPrenom').value;
-  const email = document.getElementById('etudiantEmail').value;
-  const etudiant = { nom, prenom, email };
+  const formData = new FormData(e.target);
+  const etudiant = {
+    nom: formData.get('nom'),
+    prenom: formData.get('prenom'),
+    email: formData.get('email')
+  };
 
-  const response = await fetch(`${apiUrl}/etudiants`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(etudiant),
-  });
+  try {
+    const response = await fetch('/api/etudiants', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(etudiant),
+    });
 
-  if (response.ok) {
-    alert('Étudiant ajouté avec succès');
-    getEtudiants();  // Recharger la liste des étudiants
-  } else {
-    alert('Erreur lors de l\'ajout de l\'étudiant');
+    if (response.ok) {
+      alert('Étudiant ajouté avec succès');
+      reloadPage();
+    } else {
+      alert('Erreur lors de l\'ajout de l\'étudiant');
+    }
+  } catch (error) {
+    console.error('Erreur:', error);
+    alert('Une erreur est survenue');
   }
 });
 
 // Ajouter un livre
 document.getElementById('addLivreForm').addEventListener('submit', async (e) => {
   e.preventDefault();
-  const titre = document.getElementById('livreTitre').value;
-  const disponibilite = document.getElementById('livreDisponibilite').checked;
-  const livre = { titre, disponibilite };
+  const formData = new FormData(e.target);
+  const livre = {
+    titre: formData.get('titre'),
+    disponibilite: formData.get('disponibilite') === 'on'
+  };
 
-  const response = await fetch(`${apiUrl}/livres`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(livre),
-  });
+  try {
+    const response = await fetch('/api/livres', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(livre),
+    });
 
-  if (response.ok) {
-    alert('Livre ajouté avec succès');
-    getLivres();  // Recharger la liste des livres
-  } else {
-    alert('Erreur lors de l\'ajout du livre');
+    if (response.ok) {
+      alert('Livre ajouté avec succès');
+      reloadPage();
+    } else {
+      alert('Erreur lors de l\'ajout du livre');
+    }
+  } catch (error) {
+    console.error('Erreur:', error);
+    alert('Une erreur est survenue');
   }
 });
 
 // Ajouter un emprunt
 document.getElementById('addEmpruntForm').addEventListener('submit', async (e) => {
   e.preventDefault();
-  const dateDebut = document.getElementById('dateDebut').value;
-  const dateFin = document.getElementById('dateFin').value;
-  const etudiantId = document.getElementById('empruntEtudiant').value;
-  const livreId = document.getElementById('empruntLivre').value;
-  const emprunt = { dateDebut, dateFin, etudiant: etudiantId, livre: livreId };
+  const formData = new FormData(e.target);
+  const emprunt = {
+    dateDebut: formData.get('dateDebut'),
+    dateFin: formData.get('dateFin'),
+    etudiant: formData.get('etudiantId'),
+    livre: formData.get('livreId')
+  };
 
-  const response = await fetch(`${apiUrl}/empruntes`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(emprunt),
-  });
+  try {
+    const response = await fetch('/api/empruntes', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(emprunt),
+    });
 
-  if (response.ok) {
-    alert('Emprunt ajouté avec succès');
-    getEmprunts();  // Recharger la liste des emprunts
-  } else {
-    alert('Erreur lors de l\'ajout de l\'emprunt');
+    if (response.ok) {
+      alert('Emprunt ajouté avec succès');
+      reloadPage();
+    } else {
+      alert('Erreur lors de l\'ajout de l\'emprunt');
+    }
+  } catch (error) {
+    console.error('Erreur:', error);
+    alert('Une erreur est survenue');
   }
 });
 

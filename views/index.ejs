@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestion de Bibliothèque</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Gestion de Bibliothèque ID IHIA YOUSSEF</h1>
+
+    <!-- Liste des étudiants -->
+    <h2>Liste des Étudiants</h2>
+    <ul id="etudiantsList">
+      <% if (etudiants && etudiants.length) { %>
+        <% etudiants.forEach(function(etudiant) { %>
+          <li>
+            <%= etudiant.nom %> <%= etudiant.prenom %> - <%= etudiant.email %>
+          </li>
+        <% }); %>
+      <% } else { %>
+        <li>Aucun étudiant enregistré</li>
+      <% } %>
+    </ul>
+
+    <!-- Formulaire d'ajout d'étudiant -->
+    <h2>Ajouter un Étudiant</h2>
+    <form id="addEtudiantForm" action="/api/etudiants" method="POST">
+      <input type="text" name="nom" placeholder="Nom" required>
+      <input type="text" name="prenom" placeholder="Prénom" required>
+      <input type="email" name="email" placeholder="Email" required>
+      <button type="submit">Ajouter</button>
+    </form>
+
+    <!-- Liste des livres -->
+    <h2>Liste des Livres</h2>
+    <ul id="livresList">
+      <% if (livres && livres.length) { %>
+        <% livres.forEach(function(livre) { %>
+          <li>
+            <%= livre.titre %> - <%= livre.disponibilite ? 'Disponible' : 'Emprunté' %>
+          </li>
+        <% }); %>
+      <% } else { %>
+        <li>Aucun livre enregistré</li>
+      <% } %>
+    </ul>
+
+    <!-- Formulaire d'ajout de livre -->
+    <h2>Ajouter un Livre</h2>
+    <form id="addLivreForm" action="/api/livres" method="POST">
+      <input type="text" name="titre" placeholder="Titre" required>
+      <input type="checkbox" name="disponibilite" checked> Disponible
+      <button type="submit">Ajouter Livre</button>
+    </form>
+
+    <!-- Liste des emprunts -->
+    <h2>Liste des Emprunts</h2>
+    <ul id="empruntsList">
+      <% if (emprunts && emprunts.length) { %>
+        <% emprunts.forEach(function(emprunt) { %>
+          <li>
+            <%= emprunt.etudiant.nom %> a emprunté <%= emprunt.livre.titre %> 
+            du <%= emprunt.dateDebut %> au <%= emprunt.dateFin %>
+          </li>
+        <% }); %>
+      <% } else { %>
+        <li>Aucun emprunt enregistré</li>
+      <% } %>
+    </ul>
+
+    <!-- Formulaire d'ajout d'emprunt -->
+    <h2>Ajouter un Emprunt</h2>
+    <form id="addEmpruntForm" action="/api/empruntes" method="POST">
+      <input type="date" name="dateDebut" required>
+      <input type="date" name="dateFin" required>
+      <select name="etudiantId" required>
+        <% if (etudiants && etudiants.length) { %>
+          <% etudiants.forEach(function(etudiant) { %>
+            <option value="<%= etudiant._id %>"><%= etudiant.nom %> <%= etudiant.prenom %></option>
+          <% }); %>
+        <% } %>
+      </select>
+      <select name="livreId" required>
+        <% if (livres && livres.length) { %>
+          <% livres.forEach(function(livre) { %>
+            <option value="<%= livre._id %>"><%= livre.titre %></option>
+          <% }); %>
+        <% } %>
+      </select>
+      <button type="submit">Ajouter Emprunt</button>
+    </form>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html> 

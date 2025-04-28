@@ -1,10 +1,9 @@
-module.exports = (req, res, next) => {
-    const { login, password } = req.headers;
-  
-    if (login === 'admin' && password === 'admin') {
-      next();
-    } else {
-      res.status(401).json({ message: 'Non autorisé' });
-    }
-  };
+const isAuthenticated = (req, res, next) => {
+  if (req.session && req.session.isAuthenticated) {
+    return next();
+  }
+  res.redirect('/login');
+};
+
+module.exports = isAuthenticated;
   
