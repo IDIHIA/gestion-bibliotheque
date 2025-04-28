@@ -1,9 +1,11 @@
 {
   "name": "gestion-bibliotheque",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"No tests implemented\" && exit 1"
+    "start": "node server.js",
+    "build": "echo \"No build step\"",
+    "test": "echo \"No tests implemented\" && exit 0"
   },
   "keywords": [],
   "author": "",
