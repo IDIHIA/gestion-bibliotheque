@@ -128,7 +128,7 @@ app.get('/test-db', async (req, res) => {
 });
 
 // Connexion à MongoDB Atlas
-const MONGODB_URI = 'mongodb+srv://livrables-db:Jq4V%2DKTTw%3AyA68g@cluster0.pjemiiw.mongodb.net/gestion-bibliotheque?retryWrites=true&w=majority';
+const MONGODB_URI = 'mongodb+srv://idihyayoussef931:i1gfdJxXVdOPb30t@cluster0.sihpaoz.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
 
 if (!MONGODB_URI) {
   console.error('Erreur: MONGODB_URI n\'est pas défini');
